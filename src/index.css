@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+  font-family: "Roboto",sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+.MuiCardHeader-title	{
+  color: #2c80ff !important
+}
+.MuiCardHeader-subheader{
+  color: #253992 !important
+}
+
+.MuiFormControlLabel-label	{
+  font-size: 14px !important;
+}
+.infinite-scroll-component {
+  overflow: hidden !important;
+}
+a {
+  text-decoration: none;
+}
+
+
+
+
+@media (max-width: 600px) {
+  .main{
+    padding: 8px 1px 6px;
+  }
+  .tabclass{
+    width: 100%;
+  }
+  .MuiTabs-scroller{
+    overflow-x: scroll !important;
+  }
+  .kycinput{
+    padding: 14px 1px;
+  }
+}
