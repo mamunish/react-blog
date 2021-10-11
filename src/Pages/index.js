@@ -6,3 +6,4 @@ export * from './RecentBlogs';
 export * from './Blogs';
 export * from './NewBlog';
 export * from './BlogDetail';
+export * from './Users';

@@ -6,6 +6,7 @@ import { registration } from './registration.reducer';
 import { users } from './users.reducer';
 import { alert } from './alert.reducer';
 import { blogs, blog } from './blogs.reducer';
+import { comments } from './comment.reducer';
 
 const rootReducer = combineReducers({
     form: reduxFormReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     users,
     alert,
     blogs,
-    blog
+    blog,
+    comments
 });
 
 export default rootReducer;

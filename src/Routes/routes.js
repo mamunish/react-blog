@@ -1,14 +1,14 @@
 import { Navigate } from "react-router-dom";
 import { LoggedOutLayout, LoggedInLayout } from "../Layouts";
-import { NotFound, Login, Register, Home, Blogs, NewBlog, BlogDetail } from "../Pages";
+import { NotFound, Login, Register, Home, Blogs, NewBlog, BlogDetail, Users } from "../Pages";
 
 /* ---------------------------- build the routes ---------------------------- */
 
-const routes = (isLoggedIn) => {
+const routes = (isLoggedIn, roles) => {
     return [
         {
             path: '/add-blog',
-            element: isLoggedIn ? <LoggedInLayout /> : <Navigate to="/login" replace />,
+            element: isLoggedIn && roles === 'user' ? <LoggedInLayout /> : <Navigate to="/login" replace />,
             children: [
                 { path: '/add-blog', element: <NewBlog  /> },
             ]
@@ -19,7 +19,8 @@ const routes = (isLoggedIn) => {
             children: [
                 { path: '/', element: <Home  /> },
                 { path: '/blogs', element: <Blogs  /> },
-                { path: '/blog/:id', element: <BlogDetail  /> }
+                { path: '/blog/:id', element: <BlogDetail  /> },
+                { path: '/users', element: isLoggedIn && roles === 'admin' ? <Users  /> : <Navigate to="/login" replace /> },
             ]
         },
         {

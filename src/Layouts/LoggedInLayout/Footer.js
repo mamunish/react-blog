@@ -1,5 +1,6 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 /* ------------- nodejs library to set properties for components ------------ */
 import PropTypes from "prop-types";
@@ -31,6 +32,9 @@ export default function Footer(props) {
     [classes.a]: true,
     [classes.footerWhiteFont]: whiteFont,
   });
+
+  const user = useSelector((state) => state.authentication.user);
+
   return (
     <footer className={footerClasses}>
       <div className={classes.container}>
@@ -47,15 +51,17 @@ export default function Footer(props) {
               </Button>
             </ListItem>
 
-            <ListItem className={classes.inlineBlock}>
-              <Button color="third" component={RouterLink} to="/add-blog">
-                Add Blogs
-              </Button>
-            </ListItem>
+            {user && user.roles == "user" && (
+              <ListItem className={classes.inlineBlock}>
+                <Button color="third" component={RouterLink} to="/add-blog">
+                  Add Blogs
+                </Button>
+              </ListItem>
+            )}
           </List>
         </div>
         <div className={classes.right}>
-          &copy; {1900 + new Date().getYear()}  by{" "}
+          &copy; {1900 + new Date().getYear()} by{" "}
           <a
             href="www.linkedin.com/in/munishwaran-m"
             className={aClasses}

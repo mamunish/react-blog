@@ -1,11 +1,13 @@
 import { userConstants } from "../Constants";
 import { alertActions } from ".";
-import { loginPath, registerPath } from "../constant";
+import { loginPath, registerPath, adminUserPath } from "../constant";
 
 export const userActions = {
   login,
   logout,
-  register
+  register,
+  getAll,
+  update
 };
 
 /**
@@ -32,6 +34,8 @@ function login(data, navigate) {
           dispatch(success(res.body));
           dispatch(alertActions.success(res.message));
           localStorage.setItem("access_token", res.body.token);
+          localStorage.setItem('user', res.body.name)
+          localStorage.setItem('roles', res.body.roles)
           navigate("/", { replace: true });
         }
       })
@@ -74,7 +78,9 @@ function register(user, navigate) {
     fetch(registerPath, {
       method: "POST",
       body: JSON.stringify(user),
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+          "Content-Type": "application/json"
+        },
     })
       .then((res) => res.json())
       .then(async (res) => {
@@ -102,3 +108,92 @@ function register(user, navigate) {
     return { type: userConstants.REGISTER_FAILURE, error };
   }
 }
+
+/**
+ * 
+ * @returns 
+ */
+function getAll() {
+  return (dispatch) => {
+    dispatch(request());
+    fetch(adminUserPath, {
+      method: "GET",
+      headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+         },
+    })
+      .then((res) => res.json())
+      .then(async (res) => {
+        if (res.statusCode === 500) {
+          dispatch(failure(res.message));
+          dispatch(alertActions.error(res.message));
+        } else {
+          dispatch(success(res.body));
+        }
+      })
+      .catch((ex) => {
+        dispatch(failure(ex.message.toString()));
+        dispatch(alertActions.error(ex.message.toString()));
+      });
+  };
+
+  function request() {
+    return { type: userConstants.GETALL_REQUEST };
+  }
+  function success(users) {
+    return { type: userConstants.GETALL_SUCCESS, users };
+  }
+  function failure(error) {
+    return { type: userConstants.GETALL_FAILURE, error };
+  }
+}
+
+/**
+ * 
+ * @param {*} id 
+ * @param {*} status 
+ * @returns 
+ */
+function update(status, id) {
+    return (dispatch) => {
+      dispatch(request());
+      const adminUserPaths = adminUserPath+'/'+id
+      fetch(adminUserPaths, {
+        method: "PUT",
+        body: JSON.stringify(status),
+        headers: {
+          "Content-Type":"application/json",
+          "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      })
+        .then((res) => res.json())
+        .then(async (res) => {
+          if (res.statusCode === 500) {
+            dispatch(failure(res.message));
+            dispatch(alertActions.error(res.message));
+          } else {
+            dispatch(success(res.body));
+            dispatch(alertActions.success(res.message));
+          }
+        })
+        .catch((ex) => {
+          dispatch(failure(ex.message.toString()));
+          dispatch(alertActions.error(ex.message.toString()));
+        });
+    };
+  
+    function request() {
+      return { type: userConstants.UPDATE_REQUEST };
+    }
+    function success(users) {
+      return { type: userConstants.UPDATE_SUCCESS, users };
+    }
+    function failure(error) {
+      return { type: userConstants.UPDATE_FAILURE, error };
+    }
+  }
+
+
+
+

@@ -6,7 +6,8 @@ export const blogActions = {
   add,
   getAll,
   loadMore,
-  getSingle
+  getSingle,
+  update
 };
 
 /**
@@ -174,5 +175,47 @@ function getSingle(id) {
   }
 }
 
+/**
+ * 
+ * @param {*} id 
+ * @param {*} status 
+ * @returns 
+ */
+function update(id, status) {
+  return (dispatch) => {
+    dispatch(request());
+    const bolgPaths = bolgPath+'/'+status+'/'+id
+    fetch(bolgPaths, {
+      method: "PUT",
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then(async (res) => {
+        if (res.statusCode === 500) {
+          dispatch(failure(res.message));
+          dispatch(alertActions.error(res.message));
+        } else {
+          dispatch(success(res.body));
+          dispatch(alertActions.success(res.message));
+        }
+      })
+      .catch((ex) => {
+        dispatch(failure(ex.message.toString()));
+        dispatch(alertActions.error(ex.message.toString()));
+      });
+  };
+
+  function request() {
+    return { type: blogConstants.UPDATE_REQUEST };
+  }
+  function success(blog) {
+    return { type: blogConstants.UPDATE_SUCCESS, blog };
+  }
+  function failure(error) {
+    return { type: blogConstants.UPDATE_FAILURE, error };
+  }
+}
 
 

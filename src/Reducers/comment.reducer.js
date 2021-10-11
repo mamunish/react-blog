@@ -1,40 +1,44 @@
-import { userConstants } from "../Constants";
+import { commentConstants } from "../Constants";
 
 /**
- * user reducer
+ * comments reducer
  * @param {*} state initial value
  * @param {*} action user actions
  * @returns action and states
  */
-export function users(state = {}, action) {
+export function comments(state = {}, action) {
   switch (action.type) {
-    case userConstants.GETALL_REQUEST:
+    case commentConstants.ADD_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case userConstants.GETALL_SUCCESS:
+    case commentConstants.ADD_SUCCESS:
       return {
         ...state,
-        items: action.users.users,
+        items: action.comments.comments,
+        count: action.comments.count,
+        loading: false,
       };
-    case userConstants.GETALL_FAILURE:
+    case commentConstants.ADD_FAILURE:
       return {
         ...state,
         error: action.error,
+        loading: false,
       };
-    case userConstants.UPDATE_REQUEST:
+    case commentConstants.GETALL_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case userConstants.UPDATE_SUCCESS:
+    case commentConstants.GETALL_SUCCESS:
       return {
         ...state,
-        items: action.users.users,
+        items: action.comments.comments,
+        count: action.comments.count,
         loading: false,
       };
-    case userConstants.UPDATE_FAILURE:
+    case commentConstants.GETALL_FAILURE:
       return {
         ...state,
         error: action.error,

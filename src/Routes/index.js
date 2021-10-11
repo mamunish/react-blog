@@ -7,5 +7,6 @@ import MainRoutes from './routes';
 
 export default function ThemeRoutes() {
     const isLoggedIn = localStorage.getItem('access_token');
-    return useRoutes(MainRoutes(isLoggedIn));
+    const roles = localStorage.getItem('roles');
+    return useRoutes(MainRoutes(isLoggedIn, roles));
 }

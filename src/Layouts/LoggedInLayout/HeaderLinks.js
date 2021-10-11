@@ -31,7 +31,7 @@ export default function HeaderLinks() {
   };
   const user = useSelector((state) => state.authentication.user);
 
-  console.log(user);
+  console.log('check user', user)
 
   const classes = useStyles();
   return (
@@ -46,12 +46,27 @@ export default function HeaderLinks() {
           Blogs
         </Button>
       </ListItem>
-      
+      {(user && user.roles== 'user') && (
       <ListItem className={classes.listItem}>
         <Button color="third" component={RouterLink} to="/add-blog">
           Add Blogs
         </Button>
       </ListItem>
+      )}
+      {(user && user.roles== 'admin') && (
+      <ListItem className={classes.listItem}>
+        <Button color="third" component={RouterLink} to="/users">
+          Users
+        </Button>
+      </ListItem>
+      )}
+      {user && (
+        <ListItem className={classes.listItem}>
+          <Button color="third" >
+           Signed in as {user.name} 
+          </Button>
+        </ListItem>
+      )}
       {user && (
         <ListItem className={classes.listItem}>
           <Button color="third" onClick={logout}>

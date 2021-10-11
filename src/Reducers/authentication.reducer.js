@@ -1,7 +1,9 @@
 import { userConstants } from '../Constants';
 
-let user = JSON.parse(localStorage.getItem('user'));
-const initialState = user ? { loggedIn: true, user } : {};
+let name = localStorage.getItem('user');
+let roles = localStorage.getItem('roles');
+let user = { "name": name, "roles": roles }
+const initialState = name ? { loggedIn: true, user } : {};
 
 /**
  * authentication reducer
@@ -19,7 +21,7 @@ export function authentication(state = initialState, action) {
         case userConstants.LOGIN_SUCCESS:
             return {
                 loggedIn: true,
-                user: action
+                user: action.user
             };
         case userConstants.LOGIN_FAILURE:
             return {};
